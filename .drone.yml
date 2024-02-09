@@ -6,7 +6,7 @@ steps:
   - name: build
     image: mcr.microsoft.com/dotnet/sdk:8.0
     environment:
-      PGCONN:
+      pgconn:
         from_secret: PGCONN
     commands:
       - apt-get update && apt-get install -y nodejs npm
@@ -15,7 +15,7 @@ steps:
   - name: test
     image: mcr.microsoft.com/dotnet/sdk:8.0
     environment:
-      PGCONN:
+      pgconn:
         from_secret: PGCONN
     commands:
       - cd api/test && dotnet test  
