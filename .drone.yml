@@ -7,10 +7,10 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - apt-get update && apt-get install -y nodejs npm
-      - cd api && dotnet run
+      - cd api/api && dotnet run
   
       
   - name: test
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
-      - cd test && dotnet test     
+      - cd api/test && dotnet test     
