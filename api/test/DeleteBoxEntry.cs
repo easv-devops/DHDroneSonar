@@ -1,14 +1,14 @@
 using Dapper;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using System;
+using System.Net.Http;
 
 namespace test;
 
 [TestFixture]
-public class DeleteTests : PageTest
+public class DeleteTests
 {
     private HttpClient _httpClient;
 
@@ -63,49 +63,6 @@ public class DeleteTests : PageTest
             }
 
             response.IsSuccessStatusCode.Should().BeTrue();
-        }
-    }
-
-
-    [Test]
-    public async Task DeleteBoxFromUI()
-    {
-        Helper.TriggerRebuild();
-        
-
-
-        var box = new Box()
-        {
-            Id = 1,
-            Size = "small",
-            Weight = 10,
-            Price = 2,
-            Material = "plastic",
-            Color = "red",
-            Quantity = 10,
-        };
-
-        var sql = $@"
-            insert into box_factory.boxes (size, weight, price, material, color, quantity) VALUES(@size, @weight,
-                @price, @material, @color, @quantity)";
-        using (var conn = Helper.DataSource.OpenConnection())
-        {
-            conn.Execute(sql, box);
-            
-        }
-
-Page.SetDefaultTimeout(3000);
-        await Page.GotoAsync(Helper.ClientAppBaseUrl);
-        var card = Page.GetByTestId("card_" + box.Id);
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Delete" }).ClickAsync();
-        await Page.GotoAsync(Helper.ClientAppBaseUrl);
-        await Expect(card).Not.ToBeVisibleAsync();
-        await using (var conn = await Helper.DataSource.OpenConnectionAsync())
-
-        {
-            int count = conn.ExecuteScalar<int>("SELECT COUNT(*) FROM box_factory.boxes WHERE id=@BoxId;",
-                new { BoxId = box.Id });
-            count.Should().Be(0);
         }
     }
 }

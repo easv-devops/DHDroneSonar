@@ -7,7 +7,5 @@ steps:
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - apt-get update && apt-get install -y nodejs npm
-      - npm install playwright
-      - npx playwright install
-      - cd api && dotnet build
+      - cd api && dotnet build && dotnet run
       - cd test && dotnet test

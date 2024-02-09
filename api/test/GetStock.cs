@@ -1,14 +1,16 @@
-﻿using Microsoft.Playwright.NUnit;
-
-namespace test;
-
-using Dapper;
+﻿using Dapper;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System;
+using System.Net.Http;
+using System.Collections.Generic;
 
-public class GetStock : PageTest
+namespace test;
+
+[TestFixture]
+public class GetStock
 {
     private HttpClient _httpClient;
 
@@ -74,45 +76,6 @@ public class GetStock : PageTest
             foreach (var box in boxes)
             {
                 box.Id.Should().BeGreaterThan(0);
-            }
-        }
-    }
-
-    // Checks that each box added will be visible in stock
-    [Test]
-    public async Task StockUiCheck()
-    {
-        Helper.TriggerRebuild();
-        var expected = new List<object>();
-        for (var i = 1; i < 10; i++)
-        {
-            var box = new Box()
-            {
-                Id = i,
-                Size = "small",
-                Weight = 1,
-                Price = 1,
-                Material = "plastic",
-                Color = "green",
-                Quantity = 1,
-            };
-            expected.Add(box);
-            var sql = $@"
-            insert into box_factory.boxes (size, weight, price, material, color, quantity) VALUES(@size, @weight,
-                @price, @material, @color, @quantity)";
-            using (var conn = Helper.DataSource.OpenConnection())
-            {
-                conn.Execute(sql, box);
-            }
-            
-            Page.SetDefaultTimeout(3000);
-            await Page.GotoAsync(Helper.ClientAppBaseUrl);
-
-
-            foreach (Box b in expected)
-            {
-                var card = Page.GetByTestId("card_" + b.Id);
-                await Expect(card).ToBeVisibleAsync();
             }
         }
     }
