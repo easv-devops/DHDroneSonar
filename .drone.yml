@@ -3,9 +3,14 @@ type: docker
 name: integration
 
 steps:
-  - name: build and test
+  - name: build
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - apt-get update && apt-get install -y nodejs npm
-      - cd api && dotnet build && dotnet run
-      - cd test && dotnet test
+      - cd api && dotnet run
+  
+      
+  - name: test
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    commands:
+      - cd test && dotnet test     
