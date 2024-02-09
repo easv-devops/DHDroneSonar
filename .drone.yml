@@ -6,5 +6,6 @@ steps:
   - name: build and test
     image: mcr.microsoft.com/dotnet/sdk:latest
     commands:
+      - apt-get update && apt-get install -y nodejs npm
       - cd api && dotnet build
       - cd test && dotnet test
