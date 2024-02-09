@@ -3,7 +3,7 @@ type: docker
 name: integration
 
 environment:
-  pgconn:
+  PGCONN:
     from_secret: PGCONN
 
 steps:
@@ -16,4 +16,4 @@ steps:
   - name: test
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
-      - cd api/test && dotnet test
+      - cd api/test && dotnet test  
