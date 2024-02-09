@@ -4,7 +4,7 @@ name: integration
 
 steps:
   - name: build and test
-    image: mcr.microsoft.com/dotnet/sdk:latest
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - apt-get update && apt-get install -y nodejs npm
       - cd api && dotnet build
