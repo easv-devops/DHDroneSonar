@@ -10,7 +10,7 @@ steps:
         from_secret: PGCONN
     commands:
       - apt-get update && apt-get install -y nodejs npm
-      - cd api/api && dotnet run
+      - cd api/api && dotnet build
 
   - name: test
     image: mcr.microsoft.com/dotnet/sdk:8.0
