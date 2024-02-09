@@ -28,7 +28,14 @@ public class BoxController : ControllerBase
     {
         return _boxService.GetInStockBoxes();
     }
-
+    
+    [HttpGet]
+    [Route("/api/stock")]
+    public IEnumerable<InStockBoxes> GetStonks()
+    {
+        return _boxService.GetInStockBoxes();
+    }
+    
     [HttpGet]
     [Route("api/boxes/{boxId}")]
     public Box Get([FromRoute] int boxId)
