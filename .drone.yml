@@ -2,15 +2,18 @@ kind: pipeline
 type: docker
 name: integration
 
+environment:
+  pgconn:
+    from_secret: PGCONN
+
 steps:
   - name: build
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
       - apt-get update && apt-get install -y nodejs npm
-      - cd api/api && dotnet run -e PGCONN=$PGCONN
-
+      - cd api/api && dotnet run
 
   - name: test
     image: mcr.microsoft.com/dotnet/sdk:8.0
     commands:
-      - cd api/test && dotnet test  
+      - cd api/test && dotnet test
